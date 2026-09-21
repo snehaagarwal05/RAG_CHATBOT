@@ -1,0 +1,29 @@
+# Node
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pkl
+
+# Virtual environment
+venv/
+.venv/
+**/venv/
+**/.venv/
+
+# Build
+dist/
+build/
+
+# VS Code
+.vscode/
