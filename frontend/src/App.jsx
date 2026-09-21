@@ -10,7 +10,7 @@ export default function App() {
   const [uploading, setUploading] = useState(false)
   const [asking, setAsking] = useState(false)
   const fileInputRef = useRef(null)
-
+  const messagesEndRef = useRef(null)
   useEffect(() => {
     loadDocs()
   }, [])
@@ -44,6 +44,9 @@ export default function App() {
     setUploading(false)
     fileInputRef.current.value = ''
     loadDocs()
+    useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages, asking])
   }
 
   function toggleDoc(docId) {
@@ -91,13 +94,17 @@ export default function App() {
       <aside className="sidebar">
         <h2>Documents</h2>
         <input
-          type="file"
-          multiple
-          ref={fileInputRef}
-          onChange={handleFiles}
-          accept=".pdf,.docx,.txt"
-        />
-        {uploading && <p className="hint">Uploading & indexing…</p>}
+  type="file"
+  id="file-upload"
+  multiple
+  ref={fileInputRef}
+  onChange={handleFiles}
+  accept=".pdf,.docx,.txt"
+  hidden
+/>
+<label htmlFor="file-upload" className="upload-btn">
+  {uploading ? 'Uploading…' : '+ Upload files'}
+</label>
 
         <div className="doc-list">
           <label className="doc-item all">
@@ -143,9 +150,15 @@ export default function App() {
             </div>
           ))}
           {messages.length === 0 && (
-            <p className="hint">Upload a document, pick it (or "All documents"), and ask a question.</p>
-          )}
-        </div>
+  <p className="hint">Upload a document, pick it (or "All documents"), and ask a question.</p>
+)}
+{asking && (
+  <div className="msg bot typing">
+    <span className="dot"></span><span className="dot"></span><span className="dot"></span>
+  </div>
+)}
+<div ref={messagesEndRef} />
+</div>
         <div className="input-row">
           <input
             value={input}
